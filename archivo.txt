@@ -1,0 +1,1 @@
+computadora99 int float char boolean < > <= == = . // 996563
