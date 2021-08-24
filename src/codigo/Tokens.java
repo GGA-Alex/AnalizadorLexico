@@ -15,11 +15,9 @@ public enum Tokens {
     Igual,
     Punto,
     OperadoresAritmeticos,
-    OperadoresLogicos,
     OperadoresRelacionales,
     Identificador,
     Comentario,
-    PuntoComa,
     Numero,
     ERROR
 }

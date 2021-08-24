@@ -1,1 +1,1 @@
-computadora99 int float char boolean < > <= == = . // 996563
+if else while switch cout cin exit return break int float string enum + - * / < <= >= // = .
