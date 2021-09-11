@@ -5,7 +5,7 @@ import static codigo.Tokens.*;
 %type Tokens
 L=[a-zA-Z_]+
 D=[0-9]+
-espacio=[ ,\t,\r,\n]+
+espacio=[ ,\t,\r]+
 %{
     public String lexeme;
 %}
@@ -14,10 +14,11 @@ if | else | while | switch | cout | cin | do | for | include | define | struct |
 int | float | string | enum | double | boolean | char {lexeme=yytext(); return TipoDato;}
 "+" | "-" | "*" | "/" {lexeme=yytext(); return OperadoresAritmeticos;}
 "<" | ">" | "==" | "<=" | ">=" | "!=" {lexeme=yytext(); return OperadoresRelacionales;}
+"||" | "&&" {lexeme=yytext(); return OperadoresLogicos;}
 {espacio} {/*Ignore*/}
 "//" {lexeme=yytext(); return Comentario;}
-"=" {lexeme=yytext(); return Igual;}
+"=" {lexeme=yytext(); return Igual;}    
 "." {lexeme=yytext(); return Punto;}
 {L}({L}|{D})* {lexeme=yytext(); return Identificador;}
-("(-"{D}+")")|{D}+ {lexeme=yytext(); return Numero;}
- . {return ERROR;}
+("(-"{D}+")")|{D}+|{D}+?.{D}+ {lexeme=yytext(); return Numero;}
+ . {lexeme=yytext(); return SISTEMA;}
