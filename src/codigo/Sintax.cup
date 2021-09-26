@@ -1,0 +1,244 @@
+package codigo;
+
+import java_cup.runtime.Symbol;
+
+parser code
+{:
+    private Symbol s;
+    
+    public void syntax_error(Symbol s){
+        this.s = s;
+    }
+
+    public Symbol getS(){
+        return this.s;
+}
+:};
+
+terminal Linea, Comillas, Gato, Dos_puntos, Punto, Simbolo_cout, Simbolo_cin, T_dato, 
+    Return, Cin, Cout, Endl, Especificador, Class, Void, Include, Using, Namespace, Std,
+    ParentesisAngular_a, ParentesisAngular_c, Entero, Cadena, If, Else, Do, While, For,
+    Igual,Op_aritmetico, Op_logico, Op_relacional, Flecha, This, Const, Ampersand,
+    Op_atribucion, Op_incremento, Op_booleano, Parentesis_a, Parentesis_c, H,Multiplicacion,
+    Llave_a, Llave_c, Corchete_a, Corchete_c, Main, P_coma, Identificador,
+    Numero, ERROR;
+non terminal INICIO, SENTENCIA, DECLARACION, DECLARACION_FOR, IF, IF_ELSE,
+    WHILE, DO_WHILE, FOR, SENTENCIA_BOOLEANA, SENTENCIA_FOR, LIBRERIA, NAMESPACE,
+    FUNCION, PARAMETRO, IMPRIMIR_PANTALLA, INGRESAR_DATOS, CADENA_IMPRIMIR, CADENA_INGRESAR, 
+    CLASE, SENTENCIA_CLASE, REPETIR_COUT ,TEXTO, FINAL;
+
+start with INICIO;
+
+INICIO ::=
+    LIBRERIA |
+    NAMESPACE |
+    FUNCION |
+    CLASE |
+    Entero Main Parentesis_a Parentesis_c Llave_a SENTENCIA Llave_c 
+;
+LIBRERIA ::= 
+    Gato Include ParentesisAngular_a Identificador ParentesisAngular_c INICIO |
+    Gato Include Comillas Identificador Punto H Comillas INICIO |
+;
+NAMESPACE ::=
+    Using Namespace Std P_coma INICIO
+;
+FUNCION ::=
+    Void Identificador Parentesis_a PARAMETRO Parentesis_c Llave_a SENTENCIA Llave_c INICIO |
+    Void Identificador Dos_puntos Dos_puntos Identificador Parentesis_a PARAMETRO Parentesis_c Llave_a SENTENCIA Llave_c FUNCION |
+    Identificador Parentesis_a Parentesis_c Llave_a Llave_c SENTENCIA_CLASE|
+    Identificador Parentesis_a Parentesis_c Llave_a Llave_c |
+    Identificador Parentesis_a Parentesis_c |
+    Identificador Parentesis_a Numero Parentesis_c |
+    Entero Identificador Parentesis_a PARAMETRO Parentesis_c Llave_a SENTENCIA Llave_c INICIO|
+
+    Identificador Dos_puntos Dos_puntos Identificador Parentesis_a PARAMETRO Parentesis_c Llave_a SENTENCIA Llave_c FUNCION|
+    Identificador Dos_puntos Dos_puntos Identificador Parentesis_a Parentesis_c Llave_a Llave_c FUNCION |
+    Cadena Identificador Dos_puntos Dos_puntos Identificador Parentesis_a PARAMETRO Parentesis_c Const Llave_a SENTENCIA Llave_c FUNCION |
+    Cadena Identificador Dos_puntos Dos_puntos Identificador Parentesis_a Parentesis_c Const Llave_a SENTENCIA Llave_c FUNCION |
+    Entero Identificador Dos_puntos Dos_puntos Identificador Parentesis_a Const PARAMETRO Parentesis_c Llave_a SENTENCIA Llave_c FUNCION |
+    Entero Identificador Dos_puntos Dos_puntos Identificador Parentesis_a Parentesis_c Const Llave_a SENTENCIA Llave_c FUNCION |
+    T_dato Identificador Dos_puntos Dos_puntos Identificador Parentesis_a PARAMETRO Parentesis_c Const Llave_a SENTENCIA Llave_c FUNCION |
+    T_dato Identificador Dos_puntos Dos_puntos Identificador Parentesis_a Parentesis_c Const Llave_a SENTENCIA Llave_c FUNCION 
+
+;
+CLASE ::=
+    Class Identificador Llave_a Especificador Dos_puntos SENTENCIA_CLASE Llave_c P_coma INICIO
+;
+SENTENCIA_CLASE ::=
+    DECLARACION |
+    DECLARACION SENTENCIA_CLASE|
+    FUNCION
+;
+PARAMETRO ::=
+    Entero Identificador |
+    T_dato Identificador |
+    Cadena Identificador |
+    Const Cadena Ampersand Identificador |
+    Cadena Ampersand Identificador |
+    Entero Ampersand Identificador |
+    T_dato Ampersand Identificador |
+    Cadena Multiplicacion Identificador |
+    Entero Multiplicacion Identificador |
+    T_dato Multiplicacion Identificador |
+    Cadena Ampersand Identificador PARAMETRO |
+    Entero Ampersand Identificador PARAMETRO |
+    T_dato Ampersand Identificador PARAMETRO |
+    Cadena Multiplicacion Identificador PARAMETRO |
+    Entero Multiplicacion Identificador PARAMETRO |
+    T_dato Multiplicacion Identificador PARAMETRO |
+    Entero Identificador PARAMETRO |
+    T_dato Identificador PARAMETRO |
+    Cadena Identificador PARAMETRO 
+;
+SENTENCIA ::= 
+    SENTENCIA DECLARACION |
+    DECLARACION |
+    SENTENCIA IF | 
+    IF |
+    SENTENCIA IF_ELSE |
+    IF_ELSE |
+    SENTENCIA WHILE |
+    WHILE |
+    SENTENCIA DO_WHILE |
+    DO_WHILE |
+    SENTENCIA FOR |
+    FOR |
+    SENTENCIA IMPRIMIR_PANTALLA |
+    IMPRIMIR_PANTALLA |
+    SENTENCIA INGRESAR_DATOS |
+    INGRESAR_DATOS |
+    SENTENCIA FINAL |
+    FINAL
+;
+DECLARACION ::=
+    Entero Identificador P_coma | 
+    Entero Identificador Corchete_a Numero Corchete_c P_coma | 
+    Entero Identificador Op_atribucion Numero P_coma |
+    Entero Identificador Igual Numero P_coma |
+    Entero Identificador Op_incremento P_coma | 
+    Entero Op_incremento Identificador P_coma |
+    
+    T_dato Identificador P_coma |
+    T_dato Identificador Corchete_a Numero Corchete_c P_coma |
+    T_dato Identificador Op_atribucion Numero P_coma |
+    T_dato Identificador Igual Numero P_coma |
+    T_dato Identificador Op_incremento P_coma | 
+    T_dato Op_incremento Identificador P_coma | 
+    Cadena Identificador P_coma |
+    Cadena Identificador Op_atribucion Comillas Comillas P_coma |
+    Cadena Identificador Igual Comillas Comillas P_coma |
+    Cadena Identificador Op_atribucion Comillas Identificador Comillas P_coma |
+    Cadena Identificador Igual Comillas Identificador Comillas P_coma |
+    Identificador P_coma |
+    Identificador ParentesisAngular_a Cadena ParentesisAngular_c Identificador P_coma |
+    Identificador ParentesisAngular_a Entero ParentesisAngular_c Identificador P_coma |
+    Identificador ParentesisAngular_a T_dato ParentesisAngular_c Identificador P_coma | 
+    Identificador Identificador Parentesis_a Numero Numero Parentesis_c P_coma | 
+    Identificador Identificador P_coma |
+    Identificador Corchete_a Numero Corchete_c P_coma | 
+    Identificador Op_atribucion Numero P_coma |
+    Identificador Op_atribucion Identificador Corchete_a Identificador Corchete_c P_coma |
+    Identificador Igual Numero P_coma |
+    Identificador Op_incremento P_coma |
+    Identificador Punto FUNCION P_coma |
+    Identificador Igual Identificador P_coma|
+    This Flecha DECLARACION |
+    Return Identificador P_coma |
+    Return Multiplicacion Identificador Op_aritmetico Multiplicacion Identificador P_coma |
+    Return Multiplicacion Identificador Multiplicacion Multiplicacion Identificador P_coma
+;
+IMPRIMIR_PANTALLA ::=
+    Cout CADENA_IMPRIMIR P_coma|
+    Cout REPETIR_COUT 
+;
+REPETIR_COUT ::=
+    CADENA_IMPRIMIR REPETIR_COUT |
+    Simbolo_cout Endl P_coma|
+;
+CADENA_IMPRIMIR ::=
+    Simbolo_cout Identificador |
+    Simbolo_cout Identificador Op_aritmetico Identificador|
+    Simbolo_cout Identificador Multiplicacion Identificador|
+    Simbolo_cout Identificador Op_aritmetico Numero|
+    Simbolo_cout Identificador Multiplicacion Numero|
+    Simbolo_cout Numero |
+    Simbolo_cout Numero Op_aritmetico Numero |
+    Simbolo_cout Numero Multiplicacion Numero |
+    Simbolo_cout Numero Punto Numero |
+    Simbolo_cout Numero Punto Numero Op_aritmetico Numero Punto Numero|
+    Simbolo_cout Numero Punto Numero Multiplicacion Numero Punto Numero|
+    Simbolo_cout Identificador Corchete_a Identificador Corchete_c |
+    Simbolo_cout Comillas Comillas |
+    Simbolo_cout Comillas TEXTO Comillas |
+    Simbolo_cout Comillas Identificador Dos_puntos Comillas
+;
+TEXTO::=
+    Identificador |
+    Numero |
+    Numero Parentesis_c |
+    Numero TEXTO |
+    Numero Parentesis_c TEXTO |
+    Identificador Punto TEXTO |
+    Identificador TEXTO 
+;
+INGRESAR_DATOS ::=
+    Cin CADENA_INGRESAR P_coma
+;
+CADENA_INGRESAR::= 
+    Simbolo_cin Identificador |
+    Simbolo_cin Identificador Corchete_a Identificador Corchete_c
+;
+IF ::= 
+    If Parentesis_a SENTENCIA_BOOLEANA Parentesis_c Llave_a SENTENCIA Llave_c
+;
+SENTENCIA_BOOLEANA ::= 
+    Op_booleano | 
+    Identificador Op_relacional Op_booleano |
+    Identificador Op_relacional Numero |
+    Identificador Op_relacional Identificador |
+    Identificador Op_relacional Comillas Comillas |
+    Identificador Op_relacional Comillas Identificador Comillas |
+    Identificador Op_relacional Identificador Punto Identificador Parentesis_a Parentesis_c |
+    Identificador Op_aritmetico Numero Op_relacional Numero |
+
+    Identificador ParentesisAngular_a Op_booleano |
+    Identificador ParentesisAngular_a Numero |
+    Identificador ParentesisAngular_a Identificador |
+    Identificador ParentesisAngular_a Comillas Comillas |
+    Identificador ParentesisAngular_a Comillas Identificador Comillas |
+    Identificador ParentesisAngular_a Identificador Punto Identificador Parentesis_a Parentesis_c |
+
+    Identificador ParentesisAngular_c Op_booleano |
+    Identificador ParentesisAngular_c Numero |
+    Identificador ParentesisAngular_c Identificador |
+    Identificador ParentesisAngular_c Comillas Comillas |
+    Identificador ParentesisAngular_c Comillas Identificador Comillas |
+    Identificador ParentesisAngular_c Identificador Punto Identificador Parentesis_a Parentesis_c
+
+;
+IF_ELSE ::= 
+    If Parentesis_a SENTENCIA_BOOLEANA Parentesis_c Llave_a SENTENCIA Llave_c Else Llave_a SENTENCIA Llave_c
+;
+WHILE ::= 
+    While Parentesis_a SENTENCIA_BOOLEANA Parentesis_c Llave_a SENTENCIA Llave_c P_coma
+;
+DO_WHILE ::= 
+    Do Llave_a SENTENCIA Llave_c While Parentesis_a SENTENCIA_BOOLEANA Parentesis_c P_coma
+;
+FOR ::= 
+    For Parentesis_a SENTENCIA_FOR Parentesis_c Llave_a SENTENCIA Llave_c
+;
+SENTENCIA_FOR ::=
+    Entero Identificador Igual Numero P_coma SENTENCIA_BOOLEANA P_coma DECLARACION_FOR |
+    T_dato Identificador Igual Numero P_coma SENTENCIA_BOOLEANA P_coma DECLARACION_FOR |
+    Identificador Igual Numero P_coma SENTENCIA_BOOLEANA P_coma DECLARACION_FOR 
+;
+DECLARACION_FOR ::= 
+    Identificador Op_atribucion Numero |
+    Identificador Op_incremento | 
+    Op_incremento Identificador
+;
+FINAL ::=
+    Return Numero P_coma
+;
